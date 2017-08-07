@@ -714,7 +714,7 @@ var Webgl = (function () {
             gl.enableVertexAttribArray(colorLocation);
             // 绑定颜色缓冲
             gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-            gl.vertexAttribPointer(colorLocation, 4, gl.UNSIGNED_BYTE, false, 0, 0);
+            gl.vertexAttribPointer(colorLocation, 4, gl.UNSIGNED_BYTE, true, 0, 0);
             // var matrix = m3.projection(gl.canvas.clientWidth, gl.canvas.clientHeight);
             // matrix = m3.translate(matrix, translation[0], translation[1]);
             // matrix = m3.translate(matrix, 50, 75);
@@ -847,15 +847,18 @@ function createCube(W, H, D, x, y, z) {
 function createCubeColor() {
     var color = [];
     return color
-        .concat(createRectColor(1, 0, 0)) // front
-        .concat(createRectColor(0, 1, 0)) // end
-        .concat(createRectColor(0, 0, 1)) // left
-        .concat(createRectColor(0, 1, 1)) // top
-        .concat(createRectColor(1, 0, 1)) // right
-        .concat(createRectColor(1, 1, 0)); // bottom
+        .concat(createRectColor(Math.random(), Math.random(), Math.random())) // front
+        .concat(createRectColor(Math.random(), Math.random(), Math.random())) // end
+        .concat(createRectColor(Math.random(), Math.random(), Math.random())) // left
+        .concat(createRectColor(Math.random(), Math.random(), Math.random())) // top
+        .concat(createRectColor(Math.random(), Math.random(), Math.random())) // right
+        .concat(createRectColor(Math.random(), Math.random(), Math.random())); // bottom
 }
 function createRectColor(r, g, b, a) {
-    if (a === void 0) { a = 1; }
+    if (a === void 0) { a = 255; }
+    r *= 255;
+    g *= 255;
+    b *= 255;
     return [
         r, g, b, a,
         r, g, b, a,
