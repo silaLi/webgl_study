@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  
+  <!-- 360 使用Google Chrome Frame -->
+  <meta name="renderer" content="webkit">
+  <title>title</title>
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  
+  <!-- 优先使用 IE 最新版本和 Chrome -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <!-- SEO页面关键词 -->
+  <meta name="keywords" content="your keywords">
+  
+  <!-- SEO页面描述 -->
+  <meta name="description" content="your description">
+  
+  <!-- favicon，可更改图片类型 -->
+  <link rel="shortcut icon" href="/favicon.ico" type="image/ico">
+  
+  <link rel="stylesheet" href="http://104.194.64.126/_lib/normalize.css">
+</head>
+<body>
+   <canvas width="500" height="500" id="c"></canvas>
+</body>
+<script id="2d-vertex-shader" type="notjs">
+ 
+  // 一个属性变量，将会从缓冲中获取数据
+  attribute vec2 a_position;
+ 
+  attribute vec2 a_texCoord;
+  varying vec2 v_texCoord;
+  uniform float u_flipY;
+  // 所有着色器都有一个main方法
+  void main() {
+ 
+    gl_Position = vec4(a_position * vec2(1, u_flipY) + vec2(0, 1), 0, 1);
+    // 将纹理坐标传给片断着色器
+    // GPU会在点之间进行插值
+    v_texCoord = a_texCoord;
+  }
+ 
+</script>
+ 
+<script id="2d-fragment-shader" type="notjs">
+ 
+  // 片断着色器没有默认精度，所以我们需要设置一个精度
+  // mediump是一个不错的默认值，代表“medium precision”（中等精度）
+  precision mediump float;
+ 
+  uniform sampler2D u_image;
+  varying vec2 v_texCoord;
+ 
+  void main() {
+    // 在纹理上寻找对应颜色值
+    gl_FragColor = texture2D(u_image, v_texCoord).rgba;
+  }
+</script>
+<script type="text/javascript">
+  var webgl = {};
+
+  function draw() {
+    var gl = webgl.gl;
+    var program = webgl.program;
+    var positionAttributeLocation = webgl.gl.getAttribLocation(webgl.program, "a_position");
+    webgl.gl.bindBuffer(webgl.gl.ARRAY_BUFFER, webgl.gl.createBuffer());
+    webgl.gl.vertexAttribPointer(positionAttributeLocation, 2, webgl.gl.FLOAT, false, 0, 0);
+    webgl.gl.enableVertexAttribArray(positionAttributeLocation);
+    // 三个二维点坐标
+    var positions = [
+      1.0,  1.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      0.0,  0.0,
+      0.0,  1.0,
+      1.0,  0.0,
+    ];
+    var u_positions = [
+      0.0,  0.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      1.0,  0.0,
+      0.0,  1.0,
+      1.0,  1.0,
+    ];
+        u_positions = positions;
+
+    webgl.gl.bufferData(webgl.gl.ARRAY_BUFFER, new Float32Array(positions), webgl.gl.STATIC_DRAW);
+    webgl.gl.bindBuffer(webgl.gl.ARRAY_BUFFER, webgl.gl.createBuffer());
+
+    var texCoordLocation = webgl.gl.getAttribLocation(program, "a_texCoord");
+ 
+    // 给矩形提供纹理坐标
+    var texCoordBuffer = webgl.gl.createBuffer();
+    webgl.gl.bindBuffer(webgl.gl.ARRAY_BUFFER, texCoordBuffer);
+    webgl.gl.bufferData(webgl.gl.ARRAY_BUFFER, new Float32Array(u_positions), webgl.gl.STATIC_DRAW);
+    webgl.gl.enableVertexAttribArray(texCoordLocation);
+    webgl.gl.vertexAttribPointer(texCoordLocation, 2, webgl.gl.FLOAT, false, 0, 0);
+   
+    // 创建纹理
+    var texture = webgl.gl.createTexture();
+    webgl.gl.bindTexture(webgl.gl.TEXTURE_2D, texture);
+   
+    // 设置参数，让我们可以绘制任何尺寸的图像
+    webgl.gl.texParameteri(webgl.gl.TEXTURE_2D, webgl.gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, webgl.gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+   
+    // 将图像上传到纹理
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+    var flipYLocation = gl.getUniformLocation(program, "u_flipY");
+    // 不翻转
+    gl.uniform1f(flipYLocation, -1);
+  }
+  function webglStart(){
+    initGl();
+    initShader();
+    draw();
+    webgl.gl.drawArrays(webgl.gl.TRIANGLES, 0, 6);
+  }
+  
+  function initShader() {
+    // 获取着色器的代码
+    var vertexShaderSource = document.getElementById("2d-vertex-shader").text;
+    var fragmentShaderSource = document.getElementById("2d-fragment-shader").text;
+    // 创建着色器 
+    var vertexShader = createShader(webgl.gl, webgl.gl.VERTEX_SHADER, vertexShaderSource);
+    var fragmentShader = createShader(webgl.gl, webgl.gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+    // 将两个着色器组装成一个着色器程序
+    webgl.program = createProgram(webgl.gl, vertexShader, fragmentShader);
+    webgl.gl.useProgram(webgl.program);
+  }
+  function initGl(){
+    var canvas = document.getElementById("c");
+    webgl.gl = canvas.getContext('webgl')
+    if (!webgl.gl) {
+      alert('不支持webgl')
+      throw '不支持webgl';
+    }
+    webgl.gl.viewport(0, 0, webgl.gl.canvas.width, webgl.gl.canvas.height);
+    // 清空画布
+    webgl.gl.clearColor(0, 0, 0, 1);
+    webgl.gl.clear(webgl.gl.COLOR_BUFFER_BIT);
+  }
+  // 创建着色器方法，输入参数：渲染上下文，着色器类型，数据源
+  function createShader(gl, type, source) {
+    var shader = webgl.gl.createShader(type); // 创建着色器对象
+    webgl.gl.shaderSource(shader, source); // 提供数据源
+    webgl.gl.compileShader(shader); // 编译 -> 生成着色器
+    var success = webgl.gl.getShaderParameter(shader, webgl.gl.COMPILE_STATUS);
+    if (success) {
+      return shader;
+    }
+   
+    webgl.gl.deleteShader(shader);
+  }
+  // 创建着色器程序
+  function createProgram(gl, vertexShader, fragmentShader) {
+    var program = webgl.gl.createProgram();
+    webgl.gl.attachShader(program, vertexShader);
+    webgl.gl.attachShader(program, fragmentShader);
+    webgl.gl.linkProgram(program);
+    var success = webgl.gl.getProgramParameter(program, webgl.gl.LINK_STATUS);
+    if (success) {
+      return program;
+    }
+   
+    webgl.gl.deleteProgram(program);
+  }
+
+  var image = new Image();
+  image.src = "img_2.png";  // 必须在同一域名下
+  image.onload = webglStart;
+  // webglStart();
+</script>
+</html>

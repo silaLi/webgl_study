@@ -1,0 +1,6 @@
+{
+    "dependencies": {
+        "Path": "Path.js",
+        "urlPathLoader": "urlPath-loader.js"
+    }
+}

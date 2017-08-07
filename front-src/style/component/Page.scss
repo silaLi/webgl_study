@@ -1,0 +1,126 @@
+.transition-view-show-hide{
+    pointer-events: none;
+	transform: translateZ(0);
+	animation: transition-view-hide-animation ease .3s forwards;
+}
+@keyframes transition-view-hide-animation{
+	  0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+.transition-view-hide-show{
+    pointer-events: none;
+    z-index: 50;
+	transform: translateZ(0);
+	animation: transition-view-show-animation ease .3s forwards;
+}
+@keyframes transition-view-show-animation{
+	  0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+// 1
+.transition-view-show-hide-left{
+    pointer-events: none;
+    transform: translateZ(0);
+    animation: transition-view-hide-animation-left ease .3s forwards;
+}
+@keyframes transition-view-hide-animation-left{
+      0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+.transition-view-hide-show-left{
+    pointer-events: none;
+    z-index: 50;
+    transform: translateZ(0);
+    animation: transition-view-show-animation-left ease .3s forwards;
+}
+@keyframes transition-view-show-animation-left{
+      0% { transform: translate3d(100%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+}
+// 2
+// scale
+.transition-view-show-hide-scale{
+    pointer-events: none;
+    z-index: 51;
+    transform: translateZ(0);
+    animation: transition-view-hide-animation-scale ease .3s forwards;
+}
+@keyframes transition-view-hide-animation-scale{
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+    100% { transform: translate3d(0, 0, 0) scale(0); }
+}
+.transition-view-hide-show-scale{
+    pointer-events: none;
+    z-index: 50;
+    transform: translateZ(0);
+    animation: transition-view-show-animation-scale ease .3s forwards;
+}
+@keyframes transition-view-show-animation-scale{
+      0% { transform: translate3d(0, 0, 0) scale(0); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+// scale
+$bgMinHeight: 1006;
+.app{
+	position: relative;
+	width: 100%;
+    height: 100%;
+    min-height: R($bgMinHeight);
+    box-sizing: border-box;
+
+    .app-wrapper{
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        > .view{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+.stream-app{
+    height: auto;
+    body{
+        height: auto;
+        .app{
+            height: auto;
+            max-height: none;
+
+            .app-wrapper{
+                height: auto;
+                min-height: R(1006);
+                .view{
+                    position: static;
+                    height: auto;
+                    .content{
+                        position: relative;
+                    }
+                }
+            }
+        }
+    }
+}
+.view, .float{
+    &.show{
+        display: block;
+    }
+    &.hide{
+        display: none;
+    }
+	.bg{
+		width: 100%;
+		display: block;
+	}
+	.content{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+        min-height: 100%;
+		overflow: hidden;
+	}
+}

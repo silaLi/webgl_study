@@ -1,0 +1,109 @@
+.rolling-container {
+    padding: 0;
+    position: relative;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    -ms-touch-action: none;
+        touch-action: none;
+}
+.rolling-container .rolling-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.rolling-container .rolling-scrollbar {
+    display: none;
+    height: 0;
+    width: 0;
+}
+.rolling-scrollbar .rolling-scrollbar-y-rail {
+    position: absolute;
+    height: 100%;
+    bottom: 0;
+    right: 0;
+    border-radius: 1000px;
+    overflow: hidden;
+}
+
+.rolling-scrollbar-y-rail .rolling-scrollbar-y {
+    border-radius: 1000px;
+    position: absolute;
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+}
+/**
+ * rolling-scrollbar-hidden css
+ */
+.rolling-barshow-hidden .rolling-scrollbar{
+    display: none;
+}
+/**
+ * rolling-scrollbar-visible css
+ */
+.rolling-barshow-visible .rolling-scrollbar {
+    display: block;
+}
+/**
+ * rolling-scrollbar-hover css
+ */
+.rolling-barshow-hover .rolling-scrollbar {
+    display: block;
+}
+.rolling-barshow-hover .rolling-scrollbar .rolling-scrollbar-y-rail {
+   width: 0;
+}
+/**
+ * rolling-scrollbar-hover.transition
+ */
+.transition .rolling-scrollbar-y-rail {
+    -webkit-transition: width .2s, background .2s;
+    -o-transition: width .2s, background .2s;
+    -moz-transition: width .2s, background .2s;
+    transition: width .2s, background .2s;
+}
+.transition .rolling-scrollbar-y {
+    -webkit-transition: height .2s, width .2s, background .2s;
+    -o-transition: height .2s, width .2s, background .2s;
+    -moz-transition: height .2s, width .2s, background .2s;
+    transition: height .2s, width .2s, background .2s;
+}
+
+/**
+ * js set style
+ */
+/*.rolling-scrollbar .rolling-scrollbar-y-rail, .rolling-barshow-hover:hover .rolling-scrollbar .rolling-scrollbar-y-rail{
+    width: 6px;
+    background: rgba(212,212,212,1);
+}
+.rolling-scrollbar-y-rail .rolling-scrollbar-y, .rolling-barshow-hover:hover .rolling-scrollbar-y-rail .rolling-scrollbar-y{
+    background: rgba(170,170,170,1);
+}
+.rolling-scrollbar .rolling-scrollbar-y-rail:hover, .bar-fixed-hover .rolling-scrollbar .rolling-scrollbar-y-rail{
+    width: 13px !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+.rolling-scrollbar-y-rail:hover .rolling-scrollbar-y, .bar-fixed-hover .rolling-scrollbar-y-rail .rolling-scrollbar-y{
+    background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.rolling-scrollbar .rolling-scrollbar-y-rail > .ie8-filter-mask, .rolling-barshow-hover:hover .rolling-scrollbar .rolling-scrollbar-y-rail > .ie8-filter-mask{
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#FFD4D4D4,endcolorstr=#FFD4D4D4);
+}
+.rolling-scrollbar-y-rail .rolling-scrollbar-y > .ie8-filter-mask, .rolling-barshow-hover:hover .rolling-scrollbar-y-rail .rolling-scrollbar-y > .ie8-filter-mask{
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#FFAAAAAA,endcolorstr=#FFAAAAAA);
+}
+.rolling-scrollbar .rolling-scrollbar-y-rail:hover > .ie8-filter-mask, .bar-fixed-hover .rolling-scrollbar .rolling-scrollbar-y-rail > .ie8-filter-mask{
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#99FFFFFF,endcolorstr=#99FFFFFF) !important;
+}
+.rolling-scrollbar-y-rail:hover .rolling-scrollbar-y > .ie8-filter-mask, .bar-fixed-hover .rolling-scrollbar-y-rail .rolling-scrollbar-y > .ie8-filter-mask{
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#99000000,endcolorstr=#99000000) !important;
+}*/
+.ie8-filter-mask{
+    height: 100%;
+    width: 100%;
+    filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#00FFFFFF,endcolorstr=#00FFFFFF);
+}
