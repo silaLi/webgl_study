@@ -686,7 +686,7 @@ var Webgl = (function () {
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         setGeometry_1(gl);
         var translation = [50, 50, 0];
-        var rotation = [degToRad(10), degToRad(0), degToRad(0)];
+        var rotation = [degToRad(30), degToRad(30), degToRad(0)];
         var scale = [1, 1, 1];
         var colorBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
@@ -699,7 +699,8 @@ var Webgl = (function () {
             // Tell WebGL how to convert from clip space to pixels
             gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
             // Clear the canvas.
-            gl.clear(gl.COLOR_BUFFER_BIT);
+            // gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             // Tell it to use our program (pair of shaders)
             gl.useProgram(program);
             // Turn on the attribute
@@ -730,6 +731,7 @@ var Webgl = (function () {
             matrix = m4_ts_1.default.scale(matrix, scale[0], scale[1], scale[2]);
             // Set the matrix.
             gl.uniformMatrix4fv(matrixLocation, false, matrix);
+            gl.enable(gl.DEPTH_TEST);
             // Draw the geometry.
             var primitiveType = gl.TRIANGLES;
             var offset = 0;
